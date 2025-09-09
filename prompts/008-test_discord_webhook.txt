@@ -1,0 +1,5 @@
+請使用 discord_send_message, discord_send_embed 工具發送完成通知到 Discord：
+- webhookUrl: https://discord.com/api/webhooks/{id}/{hash}
+- content: 前面流程執行完的結果
+- 格式：請創建一個 Discord embed 來呈現
+- username: "Claude Code Bot"

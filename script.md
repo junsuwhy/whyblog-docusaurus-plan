@@ -1,13 +1,13 @@
 ### 寫 Issue 
 
 ```
-claude -p -d --verbose --allowedTools="Edit,WriteFile,Bash" --permission-mode=acceptEdits "請讀取 @prompts/003-create-each-task.txt 並執行裡面的動作"
+claude -p -d --verbose --allowedTools="Edit,WriteFile,Bash,mcp__discord-webhook__discord-send-embed" --permission-mode=acceptEdits "請讀取 @prompts/003-create-each-task.txt 並執行裡面的動作"
 ```
 
 ### 執行 Issue
 
 ```
-claude -p -d --verbose --allowedTools="Edit,WriteFile,Bash" "請讀取 @prompts/004-execute-task.txt 並執行裡面的動作"
+claude -p -d --verbose --allowedTools="Edit,WriteFile,Bash,mcp__discord-webhook__discord-send-embed" "請讀取 @prompts/004-execute-task.txt 並執行裡面的動作"
 ```
 
 ### 跳過 Issue

@@ -1,1 +1,6 @@
 我用 @prompts/prompt-004-execute-task.txt 執行 @tasks/2-2-建立基本目錄結構.md 但有一些錯誤，我把錯誤狀況和 Log 寫在 @tasks/2-2-建立基本目錄結構-executed-log.md 請你查看並把裡面的「推測原因」、「改善方式」填上你根據我的 Prompt, task 說明和 Log 整理出來的細節，讓我能改善整個流程。
+
+最後，請使用 discord_send_embed 工具發送完成通知到 Discord：
+- webhookUrl: https://discord.com/api/webhooks/{id}/{hash}
+- content: 前面流程執行完的結果
+- username: "Claude Code Bot"

@@ -1,4 +1,16 @@
 請讀取 @3.plan.md @tasks/0-0-template.md ，並根據 3.plan.md 上面的「目前任務」，參考 0-0-template.md 在 tasks 資料夾建立一個 X-X-description.md
 例如目前任務如果是 1-1. 任務名稱 ，就產生一個 tasks/1-1-任務名稱.md
 並把 0-0-template.md 裡面 {} 的部份都改用目前任務去產生對應的內容
+寫的過程有任何規劃、思考流程、執行指令、執行結果等，請用適當方式使用 discord_send_message, discord_send_embed 工具發送完成通知到 Discord：
+- webhookUrl: https://discord.com/api/webhooks/{id}/{hash}
+- content: 前面所寫的執行過程
+- 格式：請用 🔄 做為開頭，可有 Markdown，指令請用 `...` 包起來
+- username: "Claude Code Bot"
+
 寫好後回覆我新增的檔名，我要檢查內容
+
+最後，請使用 discord_send_message, discord_send_embed 工具發送完成通知到 Discord：
+- webhookUrl: https://discord.com/api/webhooks/{id}/{hash}
+- content: 前面建立的檔案內容
+- 格式：請創建一個 Discord embed 來呈現
+- username: "Claude Code Bot"
