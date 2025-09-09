@@ -1,0 +1,4 @@
+請讀取 @3.plan.md @tasks/0-0-template.md ，並根據 3.plan.md 上面的「目前任務」，參考 0-0-template.md 在 tasks 資料夾建立一個 X-X-description.md
+例如目前任務如果是 1-1. 任務名稱 ，就產生一個 tasks/1-1-任務名稱.md
+並把 0-0-template.md 裡面 {} 的部份都改用目前任務去產生對應的內容
+寫好後回覆我新增的檔名，我要檢查內容
