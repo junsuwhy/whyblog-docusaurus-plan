@@ -1,0 +1,115 @@
+# 產品需求文件 (PRD)
+
+## 部落格與多層次知識庫
+
+* **文件版本：** 2.0
+* **文件作者：** AI 助理
+* **建立日期：** 2025 年 9 月 2 日
+* **專案代號：** Blog-KnowledgeBase-v1
+* **選定工具：** Docusaurus (基於研究報告建議)
+
+---
+
+# 產品需求文件：基於 Docusaurus 的部落格與多層次知識庫
+
+## 1. 引言
+
+本文件旨在概述一個靜態部落格與多層次知識庫的產品需求，該網站將使用 **Docusaurus** 作為靜態網站生成器（SSG）。網站內容（Markdown/MDX 檔案）將存放於一個獨立的 GitHub Repository 中，而 Docusaurus 應用程式程式碼將存放於另一個 GitHub Repository。最終生成的靜態網站將透過 GitHub Pages 部署，並利用 GitHub Actions 實現內容更新時的自動化部署，具體機制為內容 Repository 透過 `repository_dispatch` 觸發程式碼 Repository 的 GitHub Action。
+
+本專案旨在提供一個高性能、安全且易於管理的內容發布平台，特別強調對層次化知識組織和互動式內容的支援。
+
+## 2. 目標
+
+*   建立一個 **快速載入、高安全性且具成本效益** 的靜態部落格和多層次知識庫網站。
+*   實現 **內容與程式碼的有效分離**，以便於獨立管理和協作。
+*   當內容 Repository 中的文件更新時，透過 **自動化機制觸發網站重新建置與部署**。
+*   利用 Docusaurus 的核心功能，提供 **優異的 MDX 支援和直觀的層次化內容導航**。
+*   提供 **內建搜尋功能**，以提升使用者在知識庫中的資訊查找效率。
+
+## 3. 使用者故事與功能需求
+
+### 3.1 內容創作與管理 (作者視角)
+
+*   **[故事] 作為作者，我希望能夠使用 Markdown 或 MDX 格式撰寫部落格文章和知識庫條目**，因為我熟悉這些格式，且 MDX 能讓我嵌入互動式元件。
+    *   **[功能] Markdown/MDX 支援**：網站需支援標準 Markdown 語法，並深度整合 **MDX**，允許在 Markdown 內容中嵌入 React 元件。
+    *   **[功能] 內容前置資料 (Frontmatter)**：支援使用 YAML Frontmatter 定義標題、日期、作者、標籤和自訂路徑等元資料，以便於內容的動態處理和排序。
+    *   **[功能] 若沒有 Frontmatter 書寫 path 路徑，內容資料夾直接反映 path ，例如 `blog/2025/09/02/new-story.md` 則生成 `/blog/2025/09/02/new-story` 頁面。
+*   **[故事] 作為作者，我希望能夠清晰地組織我的知識庫內容，使其呈現多層次結構，如同檔案系統中的巢狀資料夾**，以便使用者能直觀地瀏覽複雜主題。
+    *   **[功能] 層次化內容組織**：支援透過巢狀檔案系統目錄來建立多層次的知識庫結構，例如 `docs/survival/first-aid-medical/burns.mdx`。
+    *   **[功能] 自動生成側邊欄導航**：Docusaurus 需能根據檔案系統結構自動生成側邊欄類別和文件連結，支援多個側邊欄以區分部落格與知識庫導航。
+*   **[故事] 作為作者，我希望能夠發布時間順序排列的部落格文章**，以便使用者追蹤最新內容。
+    *   **[功能] 部落格文章支援**：支援將文章組織成部落格格式，通常依時間順序排列。
+*   **[故事] 作為作者，我希望能夠將互動式元素（例如圖表、計算器）直接嵌入知識庫文章中**，以提升學習體驗。
+    *   **[功能] 互動式 MDX 元件**：允許建立和使用可重複利用的 React 元件（例如互動式圖表、計算器、可展開區塊、嵌入式影片），並透過 MDX 在文章中嵌入。
+
+### 3.2 網站瀏覽與體驗 (使用者視角)
+
+*   **[故事] 作為網站使用者，我希望能夠快速找到我感興趣的資訊，尤其是在知識庫中**，因為手動瀏覽多層次目錄會很繁瑣。
+    *   **[功能] 全文搜尋功能**：網站需提供 **開箱即用的全文搜尋功能**，能有效索引並搜尋所有部落格文章和知識庫內容。
+*   **[故事] 作為網站使用者，我希望網站介面簡潔、易於導航且具視覺吸引力**。
+    *   **[功能] 自訂主題與佈局**：允許透過修改導航欄、頁腳和頁面模板等方式，對網站主題和佈局進行自訂。
+*   **[功能] 快速載入與響應式設計**：網站應具有優異的載入速度，並能在不同裝置上提供良好的響應式體驗。
+
+## 4. 技術需求
+
+### 4.1 核心技術棧
+
+*   **靜態網站生成器 (SSG)**：**Docusaurus** (版本 2 或更高)。
+*   **內容格式**：Markdown (`.md`) 和 MDX (`.mdx`)。
+*   **程式語言**：JavaScript/TypeScript (Docusaurus 基於 React).
+*   **套件管理工具**：npm 或 Yarn 或 bun。
+*   **版本控制**：Git。
+
+### 4.2 Repository 結構
+
+本專案將採用雙 Repository 策略：
+
+1.  **內容 Repository (Content Repo)**：
+    *   僅包含部落格文章、知識庫條目等 **所有 Markdown/MDX 內容檔案**。
+    *   目錄結構應清晰反映知識庫的層次關係。
+    *   不包含 Docusaurus 程式碼或建置配置文件。
+2.  **應用程式 Repository (App Repo)**：
+    *   包含 **完整的 Docusaurus 應用程式程式碼**，包括配置檔案 (`docusaurus.config.js`)、主題自訂、靜態資源等。
+    *   不包含實際的內容檔案 (Markdown/MDX)，這些將在建置時從內容 Repo 獲取。
+    *   將配置 GitHub Actions 工作流程以處理網站的建置和部署。
+
+### 4.3 部署與自動化
+
+*   **託管平台**：**GitHub Pages**，將從 **應用程式 Repository** 部署靜態網站。
+*   **持續整合/持續部署 (CI/CD)**：**GitHub Actions** 將用於自動化建置和部署流程。
+*   **部署觸發機制**：
+    *   當內容 Repository 的 `main` 分支（或其他指定分支）有新的 `push` 時，應發送一個 `repository_dispatch` 事件到應用程式 Repository [使用者需求]。
+    *   應用程式 Repository 中的 GitHub Action 工作流程應配置為 **監聽此 `repository_dispatch` 事件** [使用者需求]。
+    *   此工作流程被觸發後，需執行以下步驟：
+        1.  **檢出 Docusaurus 應用程式程式碼**。
+        2.  **檢出內容 Repository 中的所有內容檔案** (例如，將內容 Repository 克隆到 Docusaurus 專案的 `content` 目錄下)。
+        3.  **執行 Docusaurus 建置命令** (`npm run build` 或 `bun build`)，生成靜態 HTML、CSS 和 JavaScript 檔案。
+        4.  使用 **`actions/deploy-pages@v4`** 或類似的官方/第三方 Action 將生成的靜態檔案部署到 GitHub Pages。
+*   **GitHub Pages 配置**：
+    *   在應用程式 Repository 的 GitHub Settings -> Pages 中，**確保「Build and deployment」的 Source 選項設定為「GitHub Actions」**。
+    *   在 Docusaurus 的配置檔案 (`docusaurus.config.js`) 中，需正確設定 `url` 和 `baseUrl` 以適應 GitHub Pages 的路徑，尤其是在部署到 `username.github.io/reponame/` 這樣的子目錄時。
+    *   在應用程式 Repository 的根目錄中，可能需要新增一個空的 `.nojekyll` 檔案，以避免 GitHub Pages 預設的 Jekyll 處理。
+
+### 4.4 性能與搜尋引擎優化 (SEO)
+
+*   **靜態網站性能**：Docusaurus 作為 SSG 本身就提供優異的性能。未來可考慮進一步的圖像優化等。
+*   **SEO 友好**：利用 Frontmatter 定義頁面標題、描述、關鍵字等元資料。確保 URL 結構清晰。
+*   **網站地圖 (Sitemap)**：Docusaurus 應能自動生成網站地圖。
+
+## 5. 部署流程 (概覽)
+
+1.  **建立內容 Repository**：存放所有 `.md` 和 `.mdx` 內容。
+2.  **建立應用程式 Repository**：存放 Docusaurus 程式碼。
+3.  **Docusaurus 配置**：在應用程式 Repo 中設定 `docusaurus.config.js`，並確保內容源指向將被檢出的內容 Repo 路徑。
+4.  **GitHub Actions 工作流程**：在應用程式 Repo 的 `.github/workflows/deploy.yml` 中定義工作流程：
+    *   觸發器：`on: repository_dispatch`。
+    *   步驟：檢出應用程式 Repo、檢出內容 Repo（例如使用 `actions/checkout@v4` 檢出應用程式 Repo，然後用另一個 `actions/checkout@v4` 或 `git clone` 檢出內容 Repo 到指定目錄）、安裝依賴、建置 Docusaurus、部署到 GitHub Pages。
+5.  **內容 Repository 的 GitHub Action (觸發器)**：在內容 Repo 中配置一個簡單的 GitHub Action，當內容更新時，使用 `peter-evans/repository-dispatch@v2` 等 Action 發送 `repository_dispatch` 事件到應用程式 Repository。
+6.  **GitHub Pages 設定**：在應用程式 Repo 的 GitHub 設定中，將 GitHub Pages 來源設定為「GitHub Actions」。
+
+## 6. 未來考量
+
+*   **國際化 (i18n)**：如果未來考慮支援多語言，需注意 Docusaurus 在新增第二語言時建置速度可能變慢的問題，並評估其影響。
+*   **內容審核工作流程**：建立一個內容提交和審核的流程，確保發布內容的質量。
+*   **分析工具整合**：整合 Google Analytics 或其他網站分析工具，以追蹤網站流量和使用者行為。
+*   **評論系統**：考慮整合評論系統（如 Giscus, Disqus）以增加互動性。
